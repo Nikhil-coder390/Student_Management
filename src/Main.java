@@ -1,9 +1,7 @@
 import java.util.*;
 import java.util.regex.*;
 public class Main {
-    private static int MAX_NUM_STUDNETS = 100;
-    private static Student[] students = new Student[MAX_NUM_STUDNETS];
-    private static int studentIndex = 0;
+    private static ArrayList<Student> students = new ArrayList<>();
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         boolean opt = true;
@@ -34,16 +32,14 @@ public class Main {
         }
     }
     public static void addStudents(Scanner input) {
-        if(studentIndex>=MAX_NUM_STUDNETS){
-            System.out.println("Number of Students Exceeded");
-            return;
-        }
+
         System.out.print("Enter Student Name: ");
         String name = input.nextLine();
         System.out.print("Enter Student Age: ");
         int age = input.nextInt();
         System.out.print("Enter Student ID: ");
         int id = input.nextInt();
+        input.nextLine();
         System.out.print("Enter Student Email Address: ");
         String mail = input.nextLine();
         while(!validEmail(mail)){
@@ -55,8 +51,8 @@ public class Main {
 
         input.nextLine();
         Student newStudent = new Student(name, id, mail, age, gpa);
-        students[studentIndex] = newStudent;
-        studentIndex++;
+        students.add(newStudent);
+        System.out.println("Student Added");
     }
     public static boolean validEmail(String email){
         String regexExp = "^[a-zA-Z0-9._]+@[a-zA-Z.]+$";
@@ -65,25 +61,25 @@ public class Main {
         return matcher.find();
     }
     public static void viewStudents(){
-        for(int i = 0; i < studentIndex; i++){
-            System.out.println(students[i]);
+        for(Student student : students){
+            System.out.println(student);
         }
     }
     public static void searchStudents(Scanner input){
         System.out.print("Enter Student Name: ");
         String name = input.nextLine();
-        for (int i = 0; i < studentIndex; i++) {
-            if (students[i].getName().equals(name)) {
-                System.out.println(students[i]);
+        for (Student student : students) {
+            if (student.getName().equals(name)) {
+                System.out.println(student);
             }
         }
     }
     private static void sortStudents(Scanner input){
         System.out.println("Enter a field to sort by (Name, ID, Age, Mail, CGPA): ");
         String field = input.nextLine();
-        Arrays.sort(students,new StudentComparator(field));
-        for(int i = 0; i < studentIndex; i++){
-            System.out.println(students[i]);
+        Collections.sort(students,new StudentComparator(field));
+        for(Student student : students){
+            System.out.println(student);
         }
     }
 
